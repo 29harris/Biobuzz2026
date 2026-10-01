@@ -17,27 +17,34 @@ public class teleop2 extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
 
-        DcMotorEx flywheelOne = robot.flywheelOne;
-        DcMotorEx flywheelTwo = robot.flywheelTwo;
+        DcMotorEx flywheelmotorOne = robot.flywheelOne;
+        DcMotorEx flywheelmotorTwo = robot.flywheelTwo;
+        Servo platformServo = robot.platformServo;
 
-        flywheelOne.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        flywheelTwo.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
-        flywheelOne.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        flywheelTwo.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        flywheelOne.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
-        flywheelTwo.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
+        flywheelmotorOne.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        flywheelmotorTwo.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+
+        flywheelmotorOne.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        flywheelmotorTwo.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+
+        flywheelmotorOne.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
+        flywheelmotorTwo.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
 
         double P = 10.0;
         double I = 0.5;
         double D = 0.0;
         double F = 12.0;
 
-        flywheelOne.setVelocityPIDFCoefficients(P, I, D, F);
-        flywheelTwo.setVelocityPIDFCoefficients(P, I, D, F);
+        flywheelmotorOne.setVelocityPIDFCoefficients(P, I, D, F);
+        flywheelmotorTwo.setVelocityPIDFCoefficients(P, I, D, F);
 
         double driveSpeed = 1.0;
+
+        double startPosition = 0.5;
+
+        platformServo.setPosition(startPosition + 15.0 / 180.0);
 
         double shooterRPM    = 360;
         double minShooterRPM = 100;
@@ -48,6 +55,10 @@ public class teleop2 extends LinearOpMode {
 
         boolean toggleStateIntake = false;
         boolean wasPressedIntake = false;
+
+        boolean ToggleStatePollen = false;
+        boolean PollenMode = false;
+
 
         boolean prevDpadUp = false;
         boolean prevDpadDown = false;
@@ -77,21 +88,7 @@ public class teleop2 extends LinearOpMode {
             if (gamepad1.dpad_right){
                 robot.intake.setPower(1);
             }
-            //                    if (gamepad1.a && !wasPressedA) {
-//                        robot.intake.setPower(0.5);
-//                        sleep(220);
 //
-//                        robot.intake.setPower(-1);
-//                        sleep(300);
-//
-//                        if (toggleStateIntake) {
-//                            robot.intake.setPower(-0.5);
-//                        } else {
-//                            robot.intake.setPower(0);
-//                        }
-//                    }
-//                    wasPressedA = gamepad1.a;
-
             // ----------------- DRIVETRAIN -----------------
             double y = gamepad1.right_stick_y;
             double x = gamepad1.right_stick_x * 1.1;
@@ -140,27 +137,32 @@ public class teleop2 extends LinearOpMode {
             double targetTicksPerSec = motorRPM * MOTOR_TICKS_PER_REV / 60.0;
 
             if (toggleStateFlywheel) {
-                flywheelOne.setVelocity(targetTicksPerSec);
-                flywheelTwo.setVelocity(targetTicksPerSec);
+                flywheelmotorOne.setVelocity(targetTicksPerSec);
+                flywheelmotorTwo.setVelocity(targetTicksPerSec);
             } else {
-                flywheelOne.setVelocity(0);
-                flywheelTwo.setVelocity(0);
+                flywheelmotorOne.setVelocity(0);
+                flywheelmotorTwo.setVelocity(0);
             }
 
-            // ----------------- FEED SERVO -----------------
-//            if (gamepad1.x) {
-//                robot.feedServo.setPosition(0);
-//            } else {
-//                robot.feedServo.setPosition(1);
-//            }
+            if (gamepad1.left_bumper) {
+                ToggleStatePollen = !ToggleStatePollen;
+            }
+            PollenMode= gamepad1.left_bumper;
+
+            if(ToggleStatePollen) {
+
+
+            }
+
+
 
             // ----------------- TELEMETRY -----------------
 
             telemetry.addData("Intake Toggle (Controls Flipped)", toggleStateIntake ? "ON" : "OFF");
 
 
-            double fly1_tps = flywheelOne.getVelocity();
-            double fly2_tps = flywheelTwo.getVelocity();
+            double fly1_tps = flywheelmotorOne.getVelocity();
+            double fly2_tps = flywheelmotorTwo.getVelocity();
 
             double fly1_motorRPM = fly1_tps * 60.0 / MOTOR_TICKS_PER_REV;
             double fly2_motorRPM = fly2_tps * 60.0 / MOTOR_TICKS_PER_REV;
@@ -179,8 +181,8 @@ public class teleop2 extends LinearOpMode {
 
             telemetry.addData("Fly1 tps", fly1_tps);
             telemetry.addData("Fly2 tps", fly2_tps);
-            telemetry.addData("Fly1 pos", flywheelOne.getCurrentPosition());
-            telemetry.addData("Fly2 pos", flywheelTwo.getCurrentPosition());
+            telemetry.addData("Fly1 pos", flywheelmotorOne.getCurrentPosition());
+            telemetry.addData("Fly2 pos", flywheelmotorTwo.getCurrentPosition());
 
             telemetry.update();
         }

@@ -2,11 +2,13 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class HWMap {
     public DcMotor frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive;
     public DcMotorEx flywheelOne, flywheelTwo;
     public DcMotor intake, outtake;
+    public Servo platformServo;
     private DcMotor[] drivemotors;
 
     public void init(HardwareMap hwMap) {
@@ -19,6 +21,7 @@ public class HWMap {
         flywheelTwo     = hwMap.get(DcMotorEx.class, "flywheelTwo");
         intake          = hwMap.get(DcMotor.class, "intake");
         outtake         = hwMap.get(DcMotor.class, "outtake");
+        platformServo   = hwMap.get(Servo.class, "platformServo");
 
         //fl = 0
         //fr = 1

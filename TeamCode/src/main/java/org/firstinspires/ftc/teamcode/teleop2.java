@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "teleop2")
 public class teleop2 extends LinearOpMode {
@@ -20,6 +21,8 @@ public class teleop2 extends LinearOpMode {
         DcMotorEx flywheelmotorOne = robot.flywheelOne;
         DcMotorEx flywheelmotorTwo = robot.flywheelTwo;
         Servo platformServo = robot.platformServo;
+        Servo trapdoorServo = robot.trapdoorServo;
+        Servo flywheelServo = robot.flywheelServo;
 
 
 
@@ -58,6 +61,13 @@ public class teleop2 extends LinearOpMode {
 
         boolean ToggleStatePollen = false;
         boolean PollenMode = false;
+
+        boolean ToggleStateNectar = false;
+        boolean NectarMode = false;
+
+        double startPositionServo = 0.5;
+        double startPositionTrapdoorServo = 0.5;
+        double startPositionFlywheelServo = 0.5;
 
 
         boolean prevDpadUp = false;
@@ -143,16 +153,38 @@ public class teleop2 extends LinearOpMode {
                 flywheelmotorOne.setVelocity(0);
                 flywheelmotorTwo.setVelocity(0);
             }
-
-            if (gamepad1.left_bumper) {
+//-------------------POLLEEEENNNN MODE ---------------------
+            if (gamepad1.left_bumper && !PollenMode) {
                 ToggleStatePollen = !ToggleStatePollen;
             }
-            PollenMode= gamepad1.left_bumper;
+            PollenMode = gamepad1.left_bumper;
 
             if(ToggleStatePollen) {
+                platformServo.setPosition(startPositionServo + 15.0 / 180.0);
+
+
+            }else{
+                platformServo.setPosition(startPositionServo);
+            }
+//-------------------Nectar MODE ---------------------
+            if (gamepad1.left_trigger_pressed && !NectarMode) {
+                ToggleStateNectar = !ToggleStateNectar;
+            }
+            NectarMode = gamepad1.left_bumper;
+
+            if(ToggleStateNectar) {
+                platformServo.setPosition(startPositionServo + 25.0 / 180.0);
+                trapdoorServo.setPosition(startPositionTrapdoorServo + 45.0 / 180.0);
+                flywheelServo.setPosition(startPositionFlywheelServo + 90.0 / 180.0);
+
+            }else{
+                platformServo.setPosition(startPositionServo);
+                trapdoorServo.setPosition(startPositionTrapdoorServo);
+                flywheelServo.setPosition(startPositionFlywheelServo);
 
 
             }
+
 
 
 

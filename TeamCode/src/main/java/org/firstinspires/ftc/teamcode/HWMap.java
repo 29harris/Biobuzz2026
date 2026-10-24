@@ -9,13 +9,12 @@ public class HWMap {
     public DcMotorEx flywheelOne, flywheelTwo;
     public DcMotor intake, outtake;
     public Servo platformServo, flywheelServo,trapdoorServo;
-    private DcMotor[] drivemotors;
 
     public void init(HardwareMap hwMap) {
-        frontLeftDrive  = hwMap.get(DcMotor.class, "FLD");
-        frontRightDrive = hwMap.get(DcMotor.class, "FRD");
-        backLeftDrive   = hwMap.get(DcMotor.class, "BLD");
-        backRightDrive  = hwMap.get(DcMotor.class, "BRD");
+        frontLeftDrive  = hwMap.dcMotor.get("FLD");
+        frontRightDrive = hwMap.dcMotor.get("FRD");
+        backLeftDrive   = hwMap.dcMotor.get("BLD");
+        backRightDrive  = hwMap.dcMotor.get("BRD");
 //        feedServo       = hwMap.get(Servo.class, "feedServo");
         flywheelOne     = hwMap.get(DcMotorEx.class, "flywheelOne");
         flywheelTwo     = hwMap.get(DcMotorEx.class, "flywheelTwo");
@@ -33,7 +32,6 @@ public class HWMap {
         //br = 3
 
 
-        drivemotors = new DcMotor[]{frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive, flywheelOne, flywheelTwo};
 
         //directions
         frontLeftDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -50,17 +48,11 @@ public class HWMap {
         backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //zero power behavior
-        for (DcMotor motor : drivemotors) {
-            motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        }
 
         stopAll();
     }
 
     public void stopAll() {
-        for (DcMotor motor : drivemotors) {
-            motor.setPower(0);
-//            feedServo.setPosition(1);
-        }
+
     }
 }

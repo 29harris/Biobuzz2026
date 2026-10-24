@@ -17,7 +17,7 @@ public class teleop2 extends LinearOpMode {
     private static final double MOTOR_TICKS_PER_REV = 1200.0;
     private static final double MOTOR_MAX_RPM      = 1200.0;
     private static final double SHOOTER_TO_MOTOR_RATIO = 1.0;
-    private static final double INTAKE_POWER = 0.6; // 0 to 1, lower is slower
+    private static final double INTAKE_POWER = 0.1; // 0 to 1, lower is slower
 
 
     @Override
@@ -131,8 +131,8 @@ public class teleop2 extends LinearOpMode {
 
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            double frontLeftPower  = (y - x + rx) / denominator;
-            double backLeftPower   = (y + x + rx) / denominator;
+            double frontLeftPower  = (y + x + rx) / denominator;
+            double backLeftPower   = (y - x + rx) / denominator;
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower  = (y + x - rx) / denominator;
 

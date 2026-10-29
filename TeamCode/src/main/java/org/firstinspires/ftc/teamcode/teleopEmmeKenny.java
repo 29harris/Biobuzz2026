@@ -65,6 +65,11 @@ public class teleopEmmeKenny extends LinearOpMode {
         boolean ToggleStateNectar = false;
         boolean NectarMode = false;
 
+        boolean ToggleStateGate = false;
+        boolean GateMode = false;
+        boolean GateLastTriggerState = false;
+
+
         double startPositionServo = 0.5;
         double startPositionTrapdoorServo = 0.5;
         double startPositionFlywheelServo = 0.5;
@@ -77,37 +82,30 @@ public class teleopEmmeKenny extends LinearOpMode {
 
         while (opModeIsActive()) {
             // ----------------- INTAKE TOGGLE -----------------
-            if (gamepad1.left_bumper && !wasPressedIntake) {
-                toggleStateIntake = !toggleStateIntake;
-            }
-            wasPressedIntake = gamepad1.left_bumper;
-
-            if (toggleStateIntake){
-                robot.intake.setPower(-1);
+//            if (gamepad1.left_bumper && !wasPressedIntake) {
+//                toggleStateIntake = !toggleStateIntake;
+//            }
+            if (gamepad1.left_bumper) {
+                robot.intake.setPower(0.5);
             } else {
                 robot.intake.setPower(0);
             }
-
-            if (gamepad1.dpad_right){
-                robot.intake.setPower(1);
-            }
 //
             // ----------------- DRIVETRAIN -----------------
-            double y = gamepad1.right_stick_y;
-            double x = gamepad1.right_stick_x * 1.1;
-            double rx = -gamepad1.left_stick_x;
+            double y = -gamepad1.left_stick_y;
+            double x = -gamepad1.left_stick_x * 1.1;
+            double rx = gamepad1.right_stick_x;
 
             // Flip controls while intake toggle is ON
             boolean controlsFlipped = toggleStateIntake;
             if (controlsFlipped) {
-                y = y;    // forward/back
-                x = x;    // strafing
-                rx = rx;  // rotation
+                y = -y;    // forward/back
+                x = -x;    // strafing
             }
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            double frontLeftPower  = (y - x + rx) / denominator;
-            double backLeftPower   = (y + x + rx) / denominator;
+            double frontLeftPower  = (y + x + rx) / denominator;
+            double backLeftPower   = (y - x + rx) / denominator;
             double frontRightPower = (y - x - rx) / denominator;
             double backRightPower  = (y + x - rx) / denominator;
 
@@ -176,6 +174,21 @@ public class teleopEmmeKenny extends LinearOpMode {
                 flywheelServo.setPosition(startPositionFlywheelServo);
 
 
+            }
+
+            //-------------------Gate MODE ---------------------
+            boolean currentTriggerState = gamepad1.right_trigger > 0.5; // Reads as true if pressed past halfway
+
+            if (currentTriggerState && !GateLastTriggerState && !GateMode) {
+                ToggleStateGate = !ToggleStateGate;
+            }
+
+            GateLastTriggerState = currentTriggerState;
+
+            if (ToggleStateGate) {
+                platformServo.setPosition(startPositionServo + (120.0 / 180.0));
+            } else {
+                platformServo.setPosition(startPositionServo);
             }
 
 

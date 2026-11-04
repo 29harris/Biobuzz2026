@@ -18,27 +18,22 @@ public class teleopEmmeKenny2 extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot.init(hardwareMap);
 
-        DcMotorEx flywheelmotorOne = robot.flywheelOne;
-        DcMotorEx flywheelmotorTwo = robot.flywheelTwo;
+        DcMotorEx flywheelmotor = robot.flywheelMotor;
         Servo flywheelServo = robot.flywheelServo;
 
 
-        flywheelmotorOne.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        flywheelmotorTwo.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        flywheelmotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
-        flywheelmotorOne.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-        flywheelmotorTwo.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        flywheelmotor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-        flywheelmotorOne.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
-        flywheelmotorTwo.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
+        flywheelmotor.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
 
         double P = 10.0;
         double I = 0.5;
         double D = 0.0;
         double F = 12.0;
 
-        flywheelmotorOne.setVelocityPIDFCoefficients(P, I, D, F);
-        flywheelmotorTwo.setVelocityPIDFCoefficients(P, I, D, F);
+        flywheelmotor.setVelocityPIDFCoefficients(P, I, D, F);
 
         double driveSpeed = 1.0;
 
@@ -112,14 +107,12 @@ public class teleopEmmeKenny2 extends LinearOpMode {
             double targetTicksPerSec = motorRPM * MOTOR_TICKS_PER_REV / 60.0;
 
             if (toggleStateFlywheel) {
-                flywheelmotorOne.setVelocity(targetTicksPerSec);
-                flywheelmotorTwo.setVelocity(targetTicksPerSec);
+                flywheelmotor.setVelocity(targetTicksPerSec);
                 flywheelServo.setPosition(startPositionFlywheelServo + 50.0 / 180.0);
 
 
             } else {
-                flywheelmotorOne.setVelocity(0);
-                flywheelmotorTwo.setVelocity(0);
+                flywheelmotor.setVelocity(0);
                 flywheelServo.setPosition(startPositionFlywheelServo + 15.0 / 180.0);
 
             }
@@ -128,28 +121,21 @@ public class teleopEmmeKenny2 extends LinearOpMode {
             // ----------------- TELEMETRY -----------------
 
 
-            double fly1_tps = flywheelmotorOne.getVelocity();
-            double fly2_tps = flywheelmotorTwo.getVelocity();
+            double fly_tps = flywheelmotor.getVelocity();
 
-            double fly1_motorRPM = fly1_tps * 60.0 / MOTOR_TICKS_PER_REV;
-            double fly2_motorRPM = fly2_tps * 60.0 / MOTOR_TICKS_PER_REV;
+            double fly_motorRPM = fly_tps * 60.0 / MOTOR_TICKS_PER_REV;
 
-            double fly1_shooterRPM = fly1_motorRPM * SHOOTER_TO_MOTOR_RATIO;
-            double fly2_shooterRPM = fly2_motorRPM * SHOOTER_TO_MOTOR_RATIO;
+            double fly_shooterRPM = fly_motorRPM * SHOOTER_TO_MOTOR_RATIO;
 
             telemetry.addData("Target Shooter RPM", shooterRPM);
             telemetry.addData("Target Motor RPM", motorRPM);
             telemetry.addData("Target tps", targetTicksPerSec);
 
-            telemetry.addData("Motor1 RPM", fly1_motorRPM);
-            telemetry.addData("Motor2 RPM", fly2_motorRPM);
-            telemetry.addData("Shooter1 RPM (est)", fly1_shooterRPM);
-            telemetry.addData("Shooter2 RPM (est)", fly2_shooterRPM);
+            telemetry.addData("Motor1 RPM", fly_motorRPM);
+            telemetry.addData("Shooter1 RPM (est)", fly_shooterRPM);
 
-            telemetry.addData("Fly1 tps", fly1_tps);
-            telemetry.addData("Fly2 tps", fly2_tps);
-            telemetry.addData("Fly1 pos", flywheelmotorOne.getCurrentPosition());
-            telemetry.addData("Fly2 pos", flywheelmotorTwo.getCurrentPosition());
+            telemetry.addData("Fly1 tps", fly_tps);
+            telemetry.addData("Fly1 pos", flywheelmotor.getCurrentPosition());
 
             telemetry.update();
         }

@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class HWMap {
     public DcMotor frontLeftDrive, frontRightDrive, backLeftDrive, backRightDrive;
-    public DcMotorEx flywheelOne, flywheelTwo;
+    public DcMotorEx flywheelMotor;
     public DcMotor intake, outtake;
-    public Servo platformServo, flywheelServo,trapdoorServo;
+    public Servo servoOne, servoTwo,flywheelServo;
 
     public void init(HardwareMap hwMap) {
         frontLeftDrive  = hwMap.dcMotor.get("FLD");
@@ -16,13 +16,12 @@ public class HWMap {
         backLeftDrive   = hwMap.dcMotor.get("BLD");
         backRightDrive  = hwMap.dcMotor.get("BRD");
 //        feedServo       = hwMap.get(Servo.class, "feedServo");
-        flywheelOne     = hwMap.get(DcMotorEx.class, "flywheelOne");
-        flywheelTwo     = hwMap.get(DcMotorEx.class, "flywheelTwo");
+        flywheelMotor     = hwMap.get(DcMotorEx.class, "flywheelOne");
         intake          = hwMap.get(DcMotor.class, "intake");
         outtake         = hwMap.get(DcMotor.class, "outtake");
-        platformServo   = hwMap.get(Servo.class, "platformServo");
+        servoOne   = hwMap.get(Servo.class, "platformServo");
+        servoTwo   = hwMap.get(Servo.class, "trapdoorServo");
         flywheelServo   = hwMap.get(Servo.class, "flywheelServo");
-        trapdoorServo   = hwMap.get(Servo.class, "trapdoorServo");
 
 
 

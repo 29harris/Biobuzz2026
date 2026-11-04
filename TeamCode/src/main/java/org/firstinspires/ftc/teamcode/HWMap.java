@@ -37,8 +37,7 @@ public class HWMap {
         frontRightDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
-        flywheelOne.setDirection(DcMotor.Direction.REVERSE);
-        flywheelTwo.setDirection(DcMotor.Direction.FORWARD);
+        flywheelMotor.setDirection(DcMotor.Direction.REVERSE);
         intake.setDirection(DcMotor.Direction.REVERSE);
 
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

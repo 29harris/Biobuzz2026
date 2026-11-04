@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "TeleopEmmeKenny2")
-public class teleopEmmeKenny2 extends LinearOpMode {
+public class teleopEmmeKennyKevin2 extends LinearOpMode {
 
     public HWMap robot = new HWMap();
 

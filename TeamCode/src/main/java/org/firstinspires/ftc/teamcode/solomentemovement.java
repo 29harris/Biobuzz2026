@@ -27,9 +27,6 @@ public class solomentemovement extends LinearOpMode {
 
         while (opModeIsActive()) {
             // ----------------- INTAKE TOGGLE -----------------
-//            if (gamepad1.left_bumper && !wasPressedIntake) {
-//                toggleStateIntake = !toggleStateIntake;
-//            }
             if (gamepad1.left_bumper) {
                 robot.intake.setPower(0.5);
             } else {

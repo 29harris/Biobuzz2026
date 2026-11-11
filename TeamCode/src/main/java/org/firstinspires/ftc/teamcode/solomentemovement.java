@@ -28,7 +28,10 @@ public class solomentemovement extends LinearOpMode {
         while (opModeIsActive()) {
             // ----------------- INTAKE TOGGLE -----------------
             if (gamepad1.left_bumper) {
-                robot.intake.setPower(0.5);
+                robot.intake.setPower(-1);
+
+            } else if (gamepad1.right_bumper) {
+                robot.intake.setPower(1);
             } else {
                 robot.intake.setPower(0);
             }
@@ -38,7 +41,6 @@ public class solomentemovement extends LinearOpMode {
             double x = -gamepad1.left_stick_x * 1.1;
             double rx = gamepad1.right_stick_x;
 
-            // Flip controls while intake toggle is ON
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double frontLeftPower = (y + x + rx) / denominator;

@@ -57,7 +57,10 @@ public class teleopEmmeKennyKevin2 extends LinearOpMode {
         while (opModeIsActive()) {
             // ----------------- INTAKE TOGGLE -----------------
             if (gamepad1.left_bumper) {
-                robot.intake.setPower(0.5);
+                robot.intake.setPower(-1);
+
+            } else if (gamepad1.left_trigger_pressed) {
+                robot.intake.setPower(1);
             } else {
                 robot.intake.setPower(0);
             }
@@ -105,11 +108,17 @@ public class teleopEmmeKennyKevin2 extends LinearOpMode {
 
             if (toggleStateFlywheel) {
                 flywheelmotor.setVelocity(targetTicksPerSec);
-                flywheelServo.setPosition(startPositionFlywheelServo + 50.0 / 180.0);
 
 
             } else {
                 flywheelmotor.setVelocity(0);
+            }
+
+            if (gamepad1.y) {
+                flywheelServo.setPosition(startPositionFlywheelServo + 50.0 / 180.0);
+
+            }
+            else {
                 flywheelServo.setPosition(startPositionFlywheelServo + 15.0 / 180.0);
 
             }

@@ -14,12 +14,13 @@ public class autonomous extends LinearOpMode {
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
+        waitForStart();
         if (opModeIsActive()) {
             DcMotor frontLeftDrive = robot.frontLeftDrive;
             DcMotor frontRightDrive = robot.frontRightDrive;
             DcMotor backLeftDrive = robot.backLeftDrive;
             DcMotor backRightDrive = robot.backRightDrive;
-            waitForStart();
+
 
             while (opModeIsActive()) {
                 // ----------------- INTAKE TOGGLE -----------------
@@ -30,9 +31,9 @@ public class autonomous extends LinearOpMode {
                 }
 //
 
-                robot.frontLeftDrive.setPower(-0.5);
+                robot.frontLeftDrive.setPower(0.5);
                 robot.frontRightDrive.setPower(-0.5);
-                robot.backLeftDrive.setPower(0.5);
+                robot.backLeftDrive.setPower(-0.5);
                 robot.backRightDrive.setPower(0.5);
 
                 // Drive for 2 seconds

@@ -37,17 +37,13 @@ public class teleopEmmeKennyKevin2 extends LinearOpMode {
 
         double driveSpeed = 1.0;
 
-        double shooterRPM = 360;
+        double shooterRPM = 290;
         double minShooterRPM = 100;
         double maxShooterRPM = 1200;
 
         boolean toggleStateFlywheel = false;
         boolean wasPressedFlywheel = false;
-        boolean waspressedy = false;
-        boolean flywheelservomode = false;
-
-        double startPositionFlywheelServo = -.05;
-        flywheelServo.setPosition(startPositionFlywheelServo - 0.5);
+        double servoPos = 0;
 
 
         boolean prevDpadUp = false;
@@ -76,8 +72,8 @@ public class teleopEmmeKennyKevin2 extends LinearOpMode {
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
             double frontLeftPower = (y + x + rx) / denominator;
             double backLeftPower = (y - x + rx) / denominator;
-            double frontRightPower = (y - x - rx) / denominator;
-            double backRightPower = (y + x - rx) / denominator;
+            double frontRightPower = (y + x - rx) / denominator;
+            double backRightPower = (y - x - rx) / denominator;
 
             robot.frontLeftDrive.setPower(frontLeftPower * driveSpeed);
             robot.backLeftDrive.setPower(backLeftPower * driveSpeed);
@@ -116,19 +112,18 @@ public class teleopEmmeKennyKevin2 extends LinearOpMode {
             }
 
             //servo
-            if (gamepad1.y && !waspressedy) {
 
-                flywheelservomode = !flywheelservomode;
+            if (gamepad1.dpad_left){
+                servoPos += .01;
             }
+            else if (gamepad1.dpad_right){
+                servoPos -= .01;
+            }
+            servoPos = Math.max(0.0, Math.min(servoPos, 0.7));
+            flywheelServo.setPosition(servoPos);
 
-                if (flywheelservomode) {
-                    flywheelServo.setPosition(startPositionFlywheelServo - 0.7);
-                } else {
-                    flywheelServo.setPosition(startPositionFlywheelServo - 0.5);
-                }
 
 
-            waspressedy = gamepad1.y;
 
 
             // ----------------- TELEMETRY -----------------
@@ -149,8 +144,7 @@ public class teleopEmmeKennyKevin2 extends LinearOpMode {
 
             telemetry.addData("Fly1 tps", fly_tps);
             telemetry.addData("Fly1 pos", flywheelmotor.getCurrentPosition());
-            telemetry.addData("servoposition", flywheelServo.getDirection());
-
+            telemetry.addData("servo position", servoPos);
 
 
             telemetry.update();

@@ -11,7 +11,7 @@ public class teleopEmmeKennyKevin2 extends LinearOpMode {
     public HWMap robot = new HWMap();
 
     private static final double MOTOR_TICKS_PER_REV = 560.0;
-    private static final double MOTOR_MAX_RPM      = 300.0;
+    private static final double MOTOR_MAX_RPM = 300.0;
     private static final double SHOOTER_TO_MOTOR_RATIO = 4.0;
 
     @Override
@@ -37,16 +37,17 @@ public class teleopEmmeKennyKevin2 extends LinearOpMode {
 
         double driveSpeed = 1.0;
 
-        double shooterRPM    = 360;
+        double shooterRPM = 360;
         double minShooterRPM = 100;
         double maxShooterRPM = 1200;
 
         boolean toggleStateFlywheel = false;
         boolean wasPressedFlywheel = false;
+        boolean waspressedy = false;
+        boolean flywheelservomode = false;
 
-        double startPositionFlywheelServo = 0.5;
-        flywheelServo.setPosition(startPositionFlywheelServo + 15.0 / 180.0);
-
+        double startPositionFlywheelServo = -.05;
+        flywheelServo.setPosition(startPositionFlywheelServo - 0.5);
 
 
         boolean prevDpadUp = false;
@@ -73,10 +74,10 @@ public class teleopEmmeKennyKevin2 extends LinearOpMode {
             // Flip controls while intake toggle is ON
 
             double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-            double frontLeftPower  = (y + x + rx) / denominator;
-            double backLeftPower   = (y - x + rx) / denominator;
+            double frontLeftPower = (y + x + rx) / denominator;
+            double backLeftPower = (y - x + rx) / denominator;
             double frontRightPower = (y - x - rx) / denominator;
-            double backRightPower  = (y + x - rx) / denominator;
+            double backRightPower = (y + x - rx) / denominator;
 
             robot.frontLeftDrive.setPower(frontLeftPower * driveSpeed);
             robot.backLeftDrive.setPower(backLeftPower * driveSpeed);
@@ -114,14 +115,20 @@ public class teleopEmmeKennyKevin2 extends LinearOpMode {
                 flywheelmotor.setVelocity(0);
             }
 
-            if (gamepad1.y) {
-                flywheelServo.setPosition(startPositionFlywheelServo + 50.0 / 180.0);
+            //servo
+            if (gamepad1.y && !waspressedy) {
 
+                flywheelservomode = !flywheelservomode;
             }
-            else {
-                flywheelServo.setPosition(startPositionFlywheelServo + 15.0 / 180.0);
 
-            }
+                if (flywheelservomode) {
+                    flywheelServo.setPosition(startPositionFlywheelServo - 0.7);
+                } else {
+                    flywheelServo.setPosition(startPositionFlywheelServo - 0.5);
+                }
+
+
+            waspressedy = gamepad1.y;
 
 
             // ----------------- TELEMETRY -----------------
@@ -142,8 +149,12 @@ public class teleopEmmeKennyKevin2 extends LinearOpMode {
 
             telemetry.addData("Fly1 tps", fly_tps);
             telemetry.addData("Fly1 pos", flywheelmotor.getCurrentPosition());
+            telemetry.addData("servoposition", flywheelServo.getDirection());
+
+
 
             telemetry.update();
         }
     }
 }
+

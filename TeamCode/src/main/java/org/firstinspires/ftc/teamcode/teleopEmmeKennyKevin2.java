@@ -37,13 +37,13 @@ public class teleopEmmeKennyKevin2 extends LinearOpMode {
 
         double driveSpeed = 1.0;
 
-        double shooterRPM = 290;
+        double shooterRPM = 650;
         double minShooterRPM = 100;
-        double maxShooterRPM = 1200;
+        double maxShooterRPM = 1300;
 
         boolean toggleStateFlywheel = false;
         boolean wasPressedFlywheel = false;
-        double servoPos = 0;
+        double servoPos = 0.7;
 
 
         boolean prevDpadUp = false;
@@ -113,13 +113,12 @@ public class teleopEmmeKennyKevin2 extends LinearOpMode {
 
             //servo
 
-            if (gamepad1.dpad_left){
-                servoPos += .01;
+            if (gamepad1.y){
+                servoPos =0;
             }
-            else if (gamepad1.dpad_right){
-                servoPos -= .01;
+            else{
+                servoPos =0.7;
             }
-            servoPos = Math.max(0.0, Math.min(servoPos, 0.7));
             flywheelServo.setPosition(servoPos);
 
 
